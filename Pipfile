@@ -7,6 +7,7 @@ name = "pypi"
 google-cloud-bigquery = "*"
 pandas = "*"
 google-oauth2-tool = "*"
+db-dtypes = "*"
 
 [dev-packages]
 
