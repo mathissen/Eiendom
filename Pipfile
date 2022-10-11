@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 google-cloud-bigquery = "*"
-google-cloud-storage = "*"
-azure-storage-blob = "*"
+pandas = "*"
+google-oauth2-tool = "*"
 
 [dev-packages]
 

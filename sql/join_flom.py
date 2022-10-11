@@ -1,12 +1,12 @@
 JOIN_FLOM = """
-EXPORT DATA
-  OPTIONS (
-    uri = '{output_location}', --'gs://bucket/folder/matrikkel_flom.csv',
-    format = 'CSV',
-    overwrite = true,
-    header = true,
-    field_delimiter = ';')
-AS (
+# EXPORT DATA
+#   OPTIONS (
+#     uri = '{output_location}', --'gs://bucket/folder/matrikkel_flom.csv',
+#     format = 'CSV',
+#     overwrite = true,
+#     header = true,
+#     field_delimiter = ';')
+# AS (
 
 WITH 
 adresser AS (
@@ -96,10 +96,10 @@ ON
     ST_DWITHIN(centroid, f50s.geom, 0) )
 
 SELECT
-    distinct * --using distinct to force BQ to push into one file 
+ * 
 FROM
 flom50
 ORDER BY
 FlomFare DESC  
-);
+
 """

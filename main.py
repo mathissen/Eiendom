@@ -1,40 +1,32 @@
 import argparse
-import time
 from google.cloud import bigquery
-from google.cloud import storage
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
-
+from google.oauth2 import service_account
 
 from sql.join_flom import JOIN_FLOM
 
 
-# parser = argparse.ArgumentParser(description = "Output table path in BQ")
-# parser.add_argument("-f", "--OutputTablePath", help = "Location of output table in BQ")
-# args = parser.parse_args()
+parser = argparse.ArgumentParser(description='BQ Processing..')
+parser.add_argument("-f", "--Output", help = "Location of local output")
+parser.add_argument("-f", "--ServiceAccount", help = "Location of gcp service account json")
+args = parser.parse_args()
  
-# if args.OutputTablePath:
-#     FILE_PATH = args.FilePath
-# else:
-#     raise Exception("Output destination in GCP must be speficied")
+if not args.OutputTablePath or not args.ServiceAccount:
+    raise Exception("Missing parameters")
 
-output_location_gcp="gs://mathis_temp/matrikkel_flom*.csv"
-output_local=r"C:/Users/themg/Downloads/matrikkel_flom.csv"
 
-client = bigquery.Client()
+credentials = service_account.Credentials.from_service_account_file(
+    args.ServiceAccount,
+    scopes=["https://www.googleapis.com/auth/cloud-platform"],
+)
 
-# Run job in BQ
-query_job = client.query(JOIN_FLOM.format(output_location=output_location_gcp))  
+client = bigquery.Client(
+    credentials=credentials,
+    project=credentials.project_id,
+)
 
-while(query_job.state != 'DONE'):
-    if query_job.error_result:
-        print(f"Query failed: {query_job.error_result}")
-        raise Exception("Query invalid")
-    time.sleep(30)
-    query_job.reload()
 
-if len(query_job.error_result) > 0:
-    with open(output_local) as file_obj:
-        client.download_blob_to_file(
-            output_location_gcp, file_obj)
-else:
-    print("failed...")
+df = client.query(JOIN_FLOM).to_dataframe()
+
+df.to_csv(args.Output, sep=";")
+
+
