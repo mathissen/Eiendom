@@ -15,7 +15,24 @@ FROM
 
 SELECT 
     adresser.lokalId, 
-    kommuneplan.*
+    FID, 
+    gml_id, 
+    oppdaterin, 
+    link, 
+    kommunenum, 
+    planidenti, 
+    plantype, 
+    planstatus, 
+    planbestem, 
+    lovreferan, 
+    ikrafttred, 
+    plannavn, 
+    forsteDig, 
+    vedtakEnde, 
+    kunngjori, 
+    informasjo, 
+    lovrefer_1, 
+    prosesshis
 FROM adresser
 LEFT JOIN kommuneplan ON ST_WITHIN(centroid, geom)
 """
