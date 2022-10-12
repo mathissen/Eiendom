@@ -2,7 +2,7 @@ JOIN_KOMMUNEPLAN = """
 WITH
 kommuneplan as (
 SELECT 
-    *
+    * EXCEPT(Shape__Are, Shape__Len)
 FROM `eiendomsplattform.kartdata.kommuneplaner_parsed` 
 ),
 
@@ -13,24 +13,7 @@ FROM `eiendomsplattform.kartdata.matrikkler_parsed`  )
 
 SELECT 
     adresser.lokalId, 
-    FID, 
-    gml_id, 
-    oppdaterin, 
-    link, 
-    kommunenum, 
-    planidenti, 
-    plantype, 
-    planstatus, 
-    planbestem, 
-    lovreferan, 
-    ikrafttred, 
-    plannavn, 
-    forsteDig, 
-    vedtakEnde, 
-    kunngjori, 
-    informasjo, 
-    lovrefer_1, 
-    prosesshis
+    kommuneplan.*
 FROM adresser
-LEFT JOIN kommuneplan ON ST_WITHIN(centroid, geom)
+JOIN kommuneplan ON ST_WITHIN(centroid, geom)
 """
