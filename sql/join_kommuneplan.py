@@ -2,16 +2,14 @@ JOIN_KOMMUNEPLAN = """
 WITH
 kommuneplan as (
 SELECT 
-    * EXCEPT(WKT), 
-    SAFE.st_geogfromtext(WKT) as geom FROM `eiendomsplattform.kartdata.kommuneplaner` 
+    *
+FROM `eiendomsplattform.kartdata.kommuneplaner_parsed` 
 ),
+
 adresser AS (
 SELECT 
-    * EXCEPT(Nord,
-    __st),
-    ST_CENTROID(SAFE.ST_GEOGPOINT(SAFE_CAST (__st AS FLOAT64), SAFE_CAST (Nord AS FLOAT64))) AS centroid
-FROM
-    `eiendomsplattform.kartdata.matrikkler` )
+    *
+FROM `eiendomsplattform.kartdata.matrikkler_parsed`  )
 
 SELECT 
     adresser.lokalId, 

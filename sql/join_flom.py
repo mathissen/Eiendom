@@ -11,12 +11,9 @@ JOIN_FLOM = """
 WITH 
 adresser AS (
 SELECT 
-    * EXCEPT(Nord,
-    __st),
-    CAST(NULL AS STRING) AS flag,
-    ST_CENTROID(SAFE.ST_GEOGPOINT(SAFE_CAST (__st AS FLOAT64), SAFE_CAST (Nord AS FLOAT64))) AS centroid
+    *
 FROM
-    `eiendomsplattform.kartdata.matrikkler` ),
+    `eiendomsplattform.kartdata.matrikkler_parsed` ),
 
 flom10_simplified AS (
 SELECT
